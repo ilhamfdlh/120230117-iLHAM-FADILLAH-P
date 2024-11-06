@@ -1,0 +1,101 @@
+<html>
+<head>
+  <title>Belajar WebGIS</title>
+   <!-- LEAFLET CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+   <style>
+    #map{
+        width: 100%;
+        height: 100vh;
+    }
+  </style>
+</head>
+  <body>
+  <div id="map"></div>
+  </body>
+</html>
+<!-- LEAFLET JAVASCRIPT -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src ="D:/Webgis/Titik.js"></script>
+<script>
+//<!-- LOKASI KAJIAN -->
+  var map = L.map('map').setView([-5.367016, 105.317890], 15);
+//<!-- BASEMAP OPENSTREETMAP -->
+  var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+   });
+   osm.addTo(map);
+//<!-- BASEMAP ESRI -->
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+Esri_WorldImagery.addTo(map);
+//<!-- POSISI GEDUNG GKU 1 -->
+L.marker([ -5.360920, 105.310323]).addTo(map);
+//<!-- POSISI GEDUNG E -->
+L.marker([ -5.360037, 105.315534]).addTo(map);
+//<!-- POSISI EMBUNG E -->
+L.marker([ -5.365282, 105.316677]).addTo(map);
+//<!-- POSISI MASJID AT-TANWIR -->
+L.marker([ -5.356796, 105.318831]).addTo(map);
+//<!-- BUNDARAN YANG SERING SAYA LANGGAR ATURAN SAAT BERLALU LINTAS DI ITERA -->
+var bundaran = L.circle([ -5.363156, 105.312634], {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 20
+}).addTo(map);
+//<!-- BUNDARAN INI JUGA SERING SAYA LANGGAR SETELAH SELESAI KULIAH DI GKU 2 -->
+var bundaran = L.circle([-5.360813, 105.314847], {
+    color: 'green',
+    fillColor: '#f03',
+    fillOpacity: 0.5,
+    radius: 30
+}).addTo(map);
+//<!-- POLIGON BANGUNAN  GEDUNG F -->
+var polygon = L.polygon([
+    [-5.359799, 105.315831],
+    [-5.359957, 105.315831],
+    [-5.359957, 105.315571],
+    [-5.360474, 105.315571],
+    [-5.360474, 105.315401],
+    [-5.359635, 105.315401],
+    [-5.359635, 105.315571],
+    [-5.359799, 105.315571]
+]).addTo(map);
+//<!-- MENAMPILKAN NAMA GEDUNG GKU 1 -->
+    var GKU1 = L.marker([ -5.360920, 105.310323]);
+    var namagku1 = GKU1.bindPopup("Gedung GKU 1").openPopup()
+    namagku1.addTo(map);
+//<!-- MENAMPILKAN NAMA GEDUNG E -->
+    var GEDUNG_E = L.marker([ -5.360037, 105.315534]);
+    var namagedung_e = GEDUNG_E.bindPopup("Gedung E").openPopup()
+    namagedung_e.addTo(map);
+//<!-- MENAMPILKAN NAMA EMBUNG E -->
+    var EMBUNG_E = L.marker([ -5.365282, 105.316677]);
+    var namaembung_e = EMBUNG_E.bindPopup("EMBUNG E").openPopup()
+    namaembung_e.addTo(map);
+//<!-- MENAMPILKAN NAMA MASJID AT-TANWIR -->
+    var AT_TANWIR = L.marker([ -5.356796, 105.318831]);
+    var namamasjid = AT_TANWIR.bindPopup("MASJID AT-TANWIR").openPopup()
+    namamasjid.addTo(map);
+    var baseMaps = {
+	"OSM":osm,
+	"ESRI":Esri_WorldImagery,
+};
+var overlayMaps = {
+	"GKU 1" : GKU1,
+    "Gedung E":GEDUNG_E,
+    "EMBUNG E": EMBUNG_E,
+    "MASJID AT-TANWIR": AT_TANWIR,
+   
+};
+
+map.removeLayer(GKU1)
+map.removeLayer(GEDUNG_E)
+map.removeLayer(EMBUNG_E)
+map.removeLayer(AT_TANWIR)
+
+L.control.layers(baseMaps,overlayMaps, {collapsed : false}).addTo(map);
+L.geoJSON(TITIKgeojson).addTo(map);
+</script>
